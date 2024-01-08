@@ -14,11 +14,21 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _ordenarNumero() {
     int numeroDigitado = int.tryParse(_numeroController.text) ?? 0;
-    print(numeroDigitado.runtimeType);
+
+    List<int> listaDeDigitos =
+        numeroDigitado.toString().split('').map((e) => int.parse(e)).toList();
+    listaDeDigitos.sort();
+
+    int numeroOrdenado = int.parse(listaDeDigitos.join());
 
     setState(() {
-      numerosDigitados.add(numeroDigitado);
-      // numerosDigitados.sort((a, b) => a.compareTo(b));
+      if (numerosDigitados.isNotEmpty) {
+        // Se já existir algum número na lista, substitui o último
+        numerosDigitados[numerosDigitados.length - 1] = numeroOrdenado;
+      } else {
+        // Se a lista estiver vazia, adiciona o número ordenado
+        numerosDigitados.add(numeroOrdenado);
+      }
     });
 
     print(numerosDigitados);
