@@ -10,16 +10,15 @@ class _HomeScreenState extends State<HomeScreen> {
   // Controlador para o campo de texto
   final TextEditingController _numeroController = TextEditingController();
   final DisposeHandler disposeHandler = DisposeHandler();
-  List<int> numerosDigitados = [];
+  List<String> numerosDigitados = [];
 
   void _ordenarNumero() {
-    int numeroDigitado = int.tryParse(_numeroController.text) ?? 0;
+    String numeroDigitado = _numeroController.text;
 
-    List<int> listaDeDigitos =
-        numeroDigitado.toString().split('').map((e) => int.parse(e)).toList();
+    List<String> listaDeDigitos = numeroDigitado.split('');
     listaDeDigitos.sort();
 
-    int numeroOrdenado = int.parse(listaDeDigitos.join());
+    String numeroOrdenado = listaDeDigitos.join();
 
     setState(() {
       if (numerosDigitados.isNotEmpty) {
