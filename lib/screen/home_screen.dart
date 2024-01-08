@@ -10,6 +10,19 @@ class _HomeScreenState extends State<HomeScreen> {
   // Controlador para o campo de texto
   final TextEditingController _numeroController = TextEditingController();
   final DisposeHandler disposeHandler = DisposeHandler();
+  List<int> numerosDigitados = [];
+
+  void _ordenarNumero() {
+    int numeroDigitado = int.tryParse(_numeroController.text) ?? 0;
+    print(numeroDigitado.runtimeType);
+
+    setState(() {
+      numerosDigitados.add(numeroDigitado);
+      // numerosDigitados.sort((a, b) => a.compareTo(b));
+    });
+
+    print(numerosDigitados);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               TextField(
                 controller: _numeroController,
@@ -35,9 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                   onPressed: () {
-                    print("numero digitado ${_numeroController.text}");
+                    _ordenarNumero();
                   },
-                  child: const Text('Processar número'))
+                  child: const Text('Processar número')),
+              const SizedBox(height: 16),
+              Text("Números Digitados: ${numerosDigitados.join(", ")}")
             ],
           ),
         ));
