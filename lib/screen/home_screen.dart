@@ -11,6 +11,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _numeroController = TextEditingController();
   final DisposeHandler disposeHandler = DisposeHandler();
   List<String> numerosDigitados = [];
+  bool isButtonDisabled = true;
 
   void _ordenarNumero() {
     String numeroDigitado = _numeroController.text;
@@ -21,6 +22,10 @@ class _HomeScreenState extends State<HomeScreen> {
     String numeroOrdenado = listaDeDigitos.join();
 
     setState(() {
+      // limpar o controlador ao pressionar botão.
+      // _numeroController.clear();
+      // isButtonDisabled = true;
+
       if (numerosDigitados.isNotEmpty) {
         // Se já existir algum número na lista, substitui o último
         numerosDigitados[numerosDigitados.length - 1] = numeroOrdenado;
@@ -50,15 +55,22 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               TextField(
                 controller: _numeroController,
+                onChanged: (value) {
+                  setState(() {
+                    isButtonDisabled = value.length <= 3;
+                  });
+                },
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                     labelText: 'Digite os números da nota'),
               ),
               const SizedBox(height: 16.0),
               ElevatedButton(
-                  onPressed: () {
-                    _ordenarNumero();
-                  },
+                  onPressed: isButtonDisabled
+                      ? null
+                      : () {
+                          _ordenarNumero();
+                        },
                   child: const Text('Processar número')),
               const SizedBox(height: 16),
               Text("Números Digitados: ${numerosDigitados.join(", ")}")
