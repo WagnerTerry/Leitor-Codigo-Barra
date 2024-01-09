@@ -11,6 +11,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _numeroController = TextEditingController();
   final DisposeHandler disposeHandler = DisposeHandler();
   List<String> numerosDigitados = [];
+  Map<String, int> numerosRepetidos = {};
   bool isButtonDisabled = true;
 
   void _ordenarNumero() {
@@ -33,9 +34,29 @@ class _HomeScreenState extends State<HomeScreen> {
         // Se a lista estiver vazia, adiciona o número ordenado
         numerosDigitados.add(numeroOrdenado);
       }
+
+      // Atualizar o mapa de números repetidos
+      _contarOcorrencias(numeroOrdenado);
     });
 
     print(numerosDigitados);
+    print(numerosRepetidos);
+  }
+
+  void _contarOcorrencias(String numeroOrdenado) {
+    // Limpar o mapa antes de contar as ocorrências
+    numerosRepetidos.clear();
+
+    for (int i = 0; i < numeroOrdenado.length; i++) {
+      String digito = numeroOrdenado[i];
+      numerosRepetidos.update(digito, (value) => value + 1, ifAbsent: () => 1);
+    }
+  }
+
+  String _formatNumerosRepetidos() {
+    return numerosRepetidos.entries
+        .map((entry) => '${entry.key} -> repetiu ${entry.value} vezes\n')
+        .join("");
   }
 
   @override
@@ -64,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: const InputDecoration(
                     labelText: 'Digite os números da nota'),
               ),
-              const SizedBox(height: 16.0),
+              const SizedBox(height: 32),
               ElevatedButton(
                   onPressed: isButtonDisabled
                       ? null
@@ -72,8 +93,14 @@ class _HomeScreenState extends State<HomeScreen> {
                           _ordenarNumero();
                         },
                   child: const Text('Processar número')),
+              const SizedBox(height: 32),
+              Text("Números Digitados: ${numerosDigitados.join(", ")}"),
               const SizedBox(height: 16),
-              Text("Números Digitados: ${numerosDigitados.join(", ")}")
+              Text(
+                "Números repetidos: \n${_formatNumerosRepetidos()}",
+                style: const TextStyle(
+                    fontSize: 16, color: Color.fromARGB(255, 239, 22, 6)),
+              )
             ],
           ),
         ));
