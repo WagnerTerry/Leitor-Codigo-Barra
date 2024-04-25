@@ -35,22 +35,39 @@ class _HomeScreenState extends State<HomeScreen> {
 
     for (int i = 0; i < numeroOrdenado.length; i++) {
       String digito = numeroOrdenado[i];
-      digitoAtual = digitoAtual.isEmpty ? digito : digitoAtual;
 
       if (digito == digitoAtual) {
         contagemAtual++;
-      } else if (digito != digitoAtual) {
+        lista.add(digito);
+      } else {
         lista.add(0);
         digitoAtual = digito;
         contagemAtual = 1;
       }
 
-      if (contagemAtual == 1) {
-      } else if (contagemAtual > 1) {
-        lista.add(digito);
+      if (contagemAtual > 1) {
+        widgets.add(Column(
+          children: [
+            Text(digito,
+                style: TextStyle(
+                    fontSize:
+                        18)), // Ajuste o tamanho da fonte conforme necessário
+            SizedBox(
+                height:
+                    4), // Adiciona um espaçamento entre o número original e o indicador
+            Text(contagemAtual.toString(), style: TextStyle(fontSize: 12)),
+          ],
+        ));
+      } else {
+        widgets.add(Text(digito,
+            style: TextStyle(
+                fontSize:
+                    18))); // Ajuste o tamanho da fonte conforme necessário
       }
+      print("lista $lista");
     }
-    print('lista $lista');
+
+    // -----------
 
     //   for (int i = 0; i < numeroOrdenado.length; i++) {
     //   String digito = numeroOrdenado[i];
