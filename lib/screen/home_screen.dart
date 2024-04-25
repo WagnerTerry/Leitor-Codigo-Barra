@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
 
-    print(numerosDigitados);
+    // print(numerosDigitados);
   }
 
   Wrap _buildNumeroSequencial(String numeroOrdenado) {
@@ -31,37 +31,59 @@ class _HomeScreenState extends State<HomeScreen> {
 
     String digitoAtual = '';
     int contagemAtual = 0;
+    List lista = [];
 
     for (int i = 0; i < numeroOrdenado.length; i++) {
       String digito = numeroOrdenado[i];
+      digitoAtual = digitoAtual.isEmpty ? digito : digitoAtual;
 
       if (digito == digitoAtual) {
         contagemAtual++;
-      } else {
+      } else if (digito != digitoAtual) {
+        lista.add(0);
         digitoAtual = digito;
         contagemAtual = 1;
       }
 
-      if (contagemAtual > 1) {
-        widgets.add(Column(
-          children: [
-            Text(digito,
-                style: TextStyle(
-                    fontSize:
-                        18)), // Ajuste o tamanho da fonte conforme necessário
-            SizedBox(
-                height:
-                    4), // Adiciona um espaçamento entre o número original e o indicador
-            Text(contagemAtual.toString(), style: TextStyle(fontSize: 12)),
-          ],
-        ));
-      } else {
-        widgets.add(Text(digito,
-            style: TextStyle(
-                fontSize:
-                    18))); // Ajuste o tamanho da fonte conforme necessário
+      if (contagemAtual == 1) {
+      } else if (contagemAtual > 1) {
+        lista.add(digito);
       }
     }
+    print('lista $lista');
+
+    //   for (int i = 0; i < numeroOrdenado.length; i++) {
+    //   String digito = numeroOrdenado[i];
+
+    //   if (digito == digitoAtual) {
+    //     contagemAtual++;
+    //     lista.add(digito);
+    //   } else {
+    //     lista.add(0);
+    //     digitoAtual = digito;
+    //     contagemAtual = 1;
+    //   }
+
+    //   if (contagemAtual > 1) {
+    //     widgets.add(Column(
+    //       children: [
+    //         Text(digito,
+    //             style: TextStyle(
+    //                 fontSize:
+    //                     18)), // Ajuste o tamanho da fonte conforme necessário
+    //         SizedBox(
+    //             height:
+    //                 4), // Adiciona um espaçamento entre o número original e o indicador
+    //         Text(contagemAtual.toString(), style: TextStyle(fontSize: 12)),
+    //       ],
+    //     ));
+    //   } else {
+    //     widgets.add(Text(digito,
+    //         style: TextStyle(
+    //             fontSize:
+    //                 18))); // Ajuste o tamanho da fonte conforme necessário
+    //   }
+    // }
 
     return Wrap(
       spacing: 4, // Adiciona um espaçamento horizontal entre os números
