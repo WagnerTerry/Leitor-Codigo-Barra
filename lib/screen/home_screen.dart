@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/barcode_scanner.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -9,9 +10,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _numeroController = TextEditingController();
   List<String> numerosDigitados = [];
 
-  void _ordenarNumero() {
-    String numeroDigitado = _numeroController.text;
-
+  void _ordenarNumero(String numeroDigitado) {
     List<String> listaDeDigitos = numeroDigitado.split('');
     String numeroOrdenado = listaDeDigitos.join();
 
@@ -22,8 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
         numerosDigitados.add(numeroOrdenado);
       }
     });
+  }
 
-    // print(numerosDigitados);
+  void _scanAndProcessBarcode() async {
+    String barcodeScanRes = await scanBarcode();
+    if (barcodeScanRes != '-1') {
+      _ordenarNumero(barcodeScanRes);
+    }
   }
 
   Wrap _buildNumeroSequencial(String numeroOrdenado) {
@@ -38,14 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
       if (digito == digitoAtual) {
         contagemAtual++;
       } else {
-        // Adiciona os números repetidos
         if (contagemAtual > 1) {
-          // Adiciona cada repetição do número
           for (int j = 0; j < contagemAtual - 1; j++) {
             widgets
                 .add(Text(digitoAtual, style: const TextStyle(fontSize: 18)));
           }
-          // Adiciona o último número com a contagem abaixo
           widgets.add(Column(
             children: [
               Text(digitoAtual, style: const TextStyle(fontSize: 18)),
@@ -57,13 +58,11 @@ class _HomeScreenState extends State<HomeScreen> {
           widgets.add(Text(digitoAtual, style: const TextStyle(fontSize: 18)));
         }
 
-        // Atualiza para o novo dígito e reseta a contagem
         digitoAtual = digito;
         contagemAtual = 1;
       }
     }
 
-    // Adiciona o último dígito e sua contagem após o loop
     if (contagemAtual > 1) {
       for (int j = 0; j < contagemAtual - 1; j++) {
         widgets.add(Text(digitoAtual, style: TextStyle(fontSize: 18)));
@@ -80,9 +79,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Wrap(
-      spacing: 4, // Espaçamento horizontal entre os números
-      runSpacing: 4, // Espaçamento vertical entre as linhas
-      alignment: WrapAlignment.center, // Centraliza os elementos
+      spacing: 4,
+      runSpacing: 4,
+      alignment: WrapAlignment.center,
       children: widgets,
     );
   }
@@ -109,15 +108,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 labelText: 'Digite os números da nota',
               ),
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                _ordenarNumero();
+                _ordenarNumero(_numeroController.text);
               },
               child: const Text('Processar número'),
             ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: _scanAndProcessBarcode,
+              child: const Text('Ler Código de Barras'),
+            ),
             const SizedBox(height: 32),
-            Text("Números Digitados:"),
+            const Text("Números Digitados:"),
             const SizedBox(height: 8),
             _buildNumeroSequencial(numerosDigitados.join()),
           ],
