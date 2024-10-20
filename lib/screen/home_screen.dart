@@ -31,80 +31,57 @@ class _HomeScreenState extends State<HomeScreen> {
 
     String digitoAtual = '';
     int contagemAtual = 0;
-    List lista = [];
 
     for (int i = 0; i < numeroOrdenado.length; i++) {
       String digito = numeroOrdenado[i];
 
       if (digito == digitoAtual) {
         contagemAtual++;
-        lista.add(digito);
       } else {
-        lista.add(0);
+        // Adiciona os números repetidos
+        if (contagemAtual > 1) {
+          // Adiciona cada repetição do número
+          for (int j = 0; j < contagemAtual - 1; j++) {
+            widgets
+                .add(Text(digitoAtual, style: const TextStyle(fontSize: 18)));
+          }
+          // Adiciona o último número com a contagem abaixo
+          widgets.add(Column(
+            children: [
+              Text(digitoAtual, style: const TextStyle(fontSize: 18)),
+              Text(contagemAtual.toString(),
+                  style: const TextStyle(fontSize: 12, color: Colors.red)),
+            ],
+          ));
+        } else if (contagemAtual == 1) {
+          widgets.add(Text(digitoAtual, style: const TextStyle(fontSize: 18)));
+        }
+
+        // Atualiza para o novo dígito e reseta a contagem
         digitoAtual = digito;
         contagemAtual = 1;
       }
-
-      if (contagemAtual > 1) {
-        widgets.add(Column(
-          children: [
-            Text(digito,
-                style: TextStyle(
-                    fontSize:
-                        18)), // Ajuste o tamanho da fonte conforme necessário
-            SizedBox(
-                height:
-                    4), // Adiciona um espaçamento entre o número original e o indicador
-            Text(contagemAtual.toString(), style: TextStyle(fontSize: 12)),
-          ],
-        ));
-      } else {
-        widgets.add(Text(digito,
-            style: TextStyle(
-                fontSize:
-                    18))); // Ajuste o tamanho da fonte conforme necessário
-      }
-      print("lista $lista");
     }
 
-    // -----------
-
-    //   for (int i = 0; i < numeroOrdenado.length; i++) {
-    //   String digito = numeroOrdenado[i];
-
-    //   if (digito == digitoAtual) {
-    //     contagemAtual++;
-    //     lista.add(digito);
-    //   } else {
-    //     lista.add(0);
-    //     digitoAtual = digito;
-    //     contagemAtual = 1;
-    //   }
-
-    //   if (contagemAtual > 1) {
-    //     widgets.add(Column(
-    //       children: [
-    //         Text(digito,
-    //             style: TextStyle(
-    //                 fontSize:
-    //                     18)), // Ajuste o tamanho da fonte conforme necessário
-    //         SizedBox(
-    //             height:
-    //                 4), // Adiciona um espaçamento entre o número original e o indicador
-    //         Text(contagemAtual.toString(), style: TextStyle(fontSize: 12)),
-    //       ],
-    //     ));
-    //   } else {
-    //     widgets.add(Text(digito,
-    //         style: TextStyle(
-    //             fontSize:
-    //                 18))); // Ajuste o tamanho da fonte conforme necessário
-    //   }
-    // }
+    // Adiciona o último dígito e sua contagem após o loop
+    if (contagemAtual > 1) {
+      for (int j = 0; j < contagemAtual - 1; j++) {
+        widgets.add(Text(digitoAtual, style: TextStyle(fontSize: 18)));
+      }
+      widgets.add(Column(
+        children: [
+          Text(digitoAtual, style: const TextStyle(fontSize: 18)),
+          Text(contagemAtual.toString(),
+              style: const TextStyle(fontSize: 12, color: Colors.red)),
+        ],
+      ));
+    } else if (contagemAtual == 1) {
+      widgets.add(Text(digitoAtual, style: const TextStyle(fontSize: 18)));
+    }
 
     return Wrap(
-      spacing: 4, // Adiciona um espaçamento horizontal entre os números
-      runSpacing: 4, // Adiciona um espaçamento vertical entre as linhas
+      spacing: 4, // Espaçamento horizontal entre os números
+      runSpacing: 4, // Espaçamento vertical entre as linhas
       alignment: WrapAlignment.center, // Centraliza os elementos
       children: widgets,
     );
