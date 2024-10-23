@@ -116,15 +116,19 @@ class _HomeScreenState extends State<HomeScreen> {
               child: const Text('Processar número'),
             ),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _scanAndProcessBarcode,
-              child: const Text('Ler Código de Barras'),
-            ),
             const SizedBox(height: 32),
             const Text("Números Digitados:"),
             const SizedBox(height: 8),
             _buildNumeroSequencial(numerosDigitados.join()),
           ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _scanAndProcessBarcode,
+        backgroundColor: Colors.blue,
+        child: const Icon(
+          Icons.qr_code,
+          color: Colors.white,
         ),
       ),
     );
