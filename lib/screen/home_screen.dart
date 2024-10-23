@@ -113,7 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 _ordenarNumero(_numeroController.text);
               },
-              child: const Text('Processar número'),
+              child: const Text('Processar número',
+                  style: TextStyle(color: Colors.white)),
             ),
             const SizedBox(height: 16),
             const SizedBox(height: 32),
